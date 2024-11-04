@@ -16,13 +16,13 @@ const registerUser = async (req, res, next) => {
         throw new Error(`Invalid feild ${key}`);
       }
     }
-    let user = await User.findOne({ where: { mobile_no: number } });
+    let user = await User.findOne({ where: { mobile_no } });
     if (!user) {
       await User.create({
-        firstname: mustData.fullName,
-        lastname: mustData.number,
-        gender: mustData.email,
-        email: mustData.gender,
+        firstname: mustData.firstname,
+        lastname: mustData.lastname,
+        gender: mustData.gender,
+        email: mustData.email,
         mobile_no: mustData.mobile_no,
         panNo: mustData.panNo,
         dateOfBirth: mustData.dateOfBirth,
