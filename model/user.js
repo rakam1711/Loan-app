@@ -1,57 +1,42 @@
-const { DataTypes } = require("sequelize");
+const { Sequelize } = require("sequelize");
+const db = require("./index.js");
 
-module.exports = (sequelize, Sequelize) => {
-  const Signup = sequelize.define(
-    "user",
-    {
-      userid: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      firstname: {
-        type: Sequelize.STRING(50),
-      },
-      lastname: {
-        type: Sequelize.STRING(50),
-      },
-      gender: {
-        type: Sequelize.STRING(15),
-      },
-      email: {
-        type: Sequelize.STRING(100),
-      },
-      number: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        unique: true,
-        validate: {
-          is: /^[0-9]{10}$/, // Ensures it’s a 10-digit number
-        },
-      },
-      OTP: {
-        type: Sequelize.INTEGER,
-      },
-      OTPStatus: {
-        type: Sequelize.STRING(20),
-      },
-      OTPExpiration: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-        get() {
-          return this.getDataValue("OTPExpiration")?.getTime();
-        },
-        set(value) {
-          this.setDataValue("OTPExpiration", new Date(value));
-        },
-      },
-      status: {
-        type: Sequelize.BOOLEAN,
-      },
+const User = db.define("tbluser", {
+  userid: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+
+  firstname: {
+    type: Sequelize.STRING(50),
+  },
+
+  lastname: {
+    type: Sequelize.STRING(50),
+  },
+  panNo: {
+    type: Sequelize.STRING(50),
+  },
+  dateOfBirth: {
+    type: Sequelize.STRING(50),
+  },
+  mobile_no: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      is: /^[0-9]{10}$/, // Regex to validate 10-digit mobile number
     },
-    {
-      timestamps: false,
-    }
-  );
-  return Signup;
-};
+  },
+  gender: {
+    type: Sequelize.STRING(15),
+  },
+  email: {
+    type: Sequelize.STRING(100),
+  },
+  status: {
+    type: Sequelize.BOOLEAN,
+  },
+});
+
+module.exports = User;

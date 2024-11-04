@@ -1,18 +1,20 @@
-const otpSchema = require("../model/otpSchema.js");
-const User = require("../model/userSchema.js");
+const Otp = require("../../model/otp.js");
+const User = require("../../model/user.js");
 
 const verifyotp = async (req, res) => {
   try {
     const { number, otp } = req.body;
     const currentTime = new Date();
 
-    const userOtp = await otpSchema.findOne({ where: { number } });
+    const userOtp = await Otp.findOne({ where: { mobile_no: number } });
+    console.log(userOtp, "+++++++++++++++++++++++++++");
     if (!userOtp) {
       return res.status(400).json({
         status: false,
         message: "Please register with this number first",
       });
     }
+    console.log("line 17 ++++++++++++++++++++++++++++++");
 
     if (userOtp.wrong_attempt >= 3) {
       return res.status(400).json({
@@ -21,20 +23,21 @@ const verifyotp = async (req, res) => {
           "You have exceeded the limit of wrong attempts. Please resend OTP.",
       });
     }
-
+    console.log("line 26 ++++++++++++++++++++++++++++++");
+    console.log(userOtp.expire_time, "  --- ---      ", currentTime);
     if (userOtp.expire_time < currentTime) {
       return res.status(400).json({
         status: false,
         message: "OTP has expired",
       });
     }
-
+    console.log("33,+++++++++++++++++++++++++++++++");
     const staticCode = process.env.STATICCODE;
 
     if (userOtp.OTP !== otp && staticCode !== otp) {
-      await otpSchema.update(
+      await Otp.update(
         { wrong_attempt: userOtp.wrong_attempt + 1 },
-        { where: { number } }
+        { where: { mobile_no: number } }
       );
 
       return res.status(400).json({
@@ -42,22 +45,25 @@ const verifyotp = async (req, res) => {
         message: `Wrong OTP, attempt failed ${userOtp.wrong_attempt + 1}`,
       });
     }
+    console.log("line 47 ++++++++++++++++++++++++++++++");
 
     if (userOtp.OTP === otp || (staticCode === otp && userOtp.is_active)) {
-      await otpSchema.update({ is_active: false }, { where: { number } });
+      // await Otp.update({ is_active: false }, { where: { number } });
 
-      const newUser = await User.findOne({ where: { number } });
-      if (!newUser) {
-        return res.status(200).json({
-          status: true,
-          user: "new",
-          token: null,
-        });
-      }
+      // const newUser = await User.findOne({ where: { number } });
+      // if (!newUser) {
+      //   return res.status(200).json({
+      //     status: true,
+      //     user: "new",
+      //     token: null,
+      //   });
+      // }
+      console.log("line 60 ++++++++++++++++++++++++++++++");
 
-   
-
-      return res.status(200).json({ user: newUser, token });
+      //token return hona hn agar user new nhi hn
+      return res
+        .status(200)
+        .json({ status: true, message: "OTP verified successfully" });
     } else {
       return res.status(400).json({
         status: false,

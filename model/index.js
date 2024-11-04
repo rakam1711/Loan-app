@@ -12,17 +12,18 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     idle: dbConfig.pool.idle,
   },
 });
-console.log(dbConfig.PASSWORD, "test");
-const db = {};
+// const db = {};
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+// db.Sequelize = Sequelize;
+// db.sequelize = sequelize;
 
-db.signups = require("./signup.model.js")(sequelize, Sequelize);
+// db.signups = require("./signup.model.js")(sequelize, Sequelize);
+
+// db.otps = require("./otp.js")(sequelize, Sequelize);
 
 // =====================Master Relation========================
 
 // db.masterKeys.hasMany(db.masterDatas,{ foreignKey: 'masterkey' });
 // db.masterDatas.belongsTo(db.masterKeys,{ foreignKey: 'masterkey' });
 
-module.exports = db;
+module.exports = sequelize;

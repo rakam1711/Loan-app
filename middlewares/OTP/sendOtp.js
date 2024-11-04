@@ -1,30 +1,36 @@
+const fetch = require("node-fetch");
 
 module.exports = {
-    async sendOTP(number, otp) {
-        const axios = require("axios");
+  async sendOTP(number, otp) {
+    console.log("Sending OTP to:", number, "OTP:", otp);
 
-        const options = {
-            method: "POST",
-            url: "https://api.msg91.com/api/v5/flow/",
-            headers: {
-                authkey: "372078AVkzLEKti61I61e7c540F1",
-                // authkey: "372078AVkzLEKti61I61e7c540P1", // rignt API key
-                "content-type": "application/JSON",
-                Cookie: "PHPSESSID=p6sigj223tdkhtfnq7l41tplh3",
-            },
-            data: {
-                flow_id: "61e80b152189eb79e85bb0f2",
-                sender: "BGGIES",
-                mobiles: "91" + number,
-                var: otp,
-            },
-        };
-        console.log(number, otp);
-        try {
-            const response = await axios(options);
-            return response.data;
-        } catch (error) {
-           console.log(error.message, "Middleware/OTP/sendOTP")
-        }
-    },
+    const options = {
+      method: "POST",
+      headers: {
+        authkey: "372078AVkzLEKti61I61e7c540F1",
+        // authkey: "372078AVkzLEKti61I61e7c540P1", right authkey
+        "Content-Type": "application/json",
+        Cookie: "PHPSESSID=p6sigj223tdkhtfnq7l41tplh3",
+      },
+      body: JSON.stringify({
+        flow_id: "61e80b152189eb79e85bb0f2",
+        sender: "BGGIES",
+        mobiles: "91" + number,
+        var: otp,
+      }),
+    };
+
+    try {
+      const response = await fetch(
+        "https://api.msg91.com/api/v5/flow/",
+        options
+      );
+      const data = await response.json();
+      console.log("OTP sent successfully:", data);
+      return data;
+    } catch (error) {
+      console.error("Error in sendOTP:", error.message);
+      throw error;
+    }
+  },
 };

@@ -1,11 +1,10 @@
-import express from "express";
-import { Login } from "../controllers/user.controller";
+const userRoute = require("./userRoutes.js");
 
+const appRoutes = (app) => {
+  // app.use("/", (req, res) => {
+  //   res.send("ping successfully");
+  // });
+  app.use("/user", userRoute);
+};
 
-const router = express.Router();
-router.post('/Login', Login );
-
-//router.post('/login', loginController.login);
-
-
-export default router;
+module.exports = appRoutes;

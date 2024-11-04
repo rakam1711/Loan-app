@@ -1,30 +1,29 @@
-const getOTP = require("../../../Middleware/OTP/otp.js");
-const OTP = require("../../../Middleware/OTP/sendOTP.js");
-const Signup = require("../model/signupModel.js"); 
+const getOTP = require("../../middlewares/OTP/otp.js");
+const OTP = require("../../middlewares/OTP/sendOtp.js");
+const OTPMODEL = require("../../model/otp.js");
 
 const loginUser = async (req, res) => {
   try {
-    const { countryCode, number } = req.body;
+    const { number } = req.body;
 
     const otp = await getOTP();
-    const expire_time = new Date(Date.now() + 60000 * 10); 
 
-    let user = await Signup.findOne({ where: { number } });
+    const expire_time = new Date(Date.now() + 60000 * 10);
+
+    let user = await OTPMODEL.findOne({ where: { mobile_no: number } });
 
     if (!user) {
-      user = await Signup.create({
-        number,
-        OTP: otp,
-        OTPExpiration: expire_time,
-        status: true,
+      user = await OTPMODEL.create({
+        mobile_no: number,
+        otp: otp,
+        expire_time: expire_time,
         wrong_attempt: 0,
       });
     } else {
       await user.update({
-        OTP: otp,
-        OTPExpiration: expire_time,
+        otp: otp,
+        expire_time: expire_time,
         wrong_attempt: 0,
-        status: true,
       });
     }
 
@@ -35,18 +34,20 @@ const loginUser = async (req, res) => {
       message: "OTP sent successfully",
     });
   } catch (err) {
-    if (err.name === 'SequelizeUniqueConstraintError') {
+    console.error("Error in loginUser:", err);
+
+    if (err.name === "SequelizeUniqueConstraintError") {
       return res.status(400).json({
         status: false,
-        message: 'This number is already registered.',
+        message: "This number is already registered.",
       });
     }
     return res.status(500).json({
       status: false,
-      message: 'An error occurred while processing your request.',
+      message: "An error occurred while processing your request.",
       error: err.message,
+      location: "loginUser",
     });
   }
 };
-
 module.exports = loginUser;
