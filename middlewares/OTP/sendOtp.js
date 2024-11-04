@@ -7,8 +7,8 @@ module.exports = {
     const options = {
       method: "POST",
       headers: {
-        authkey: "372078AVkzLEKti61I61e7c540F1",
-        // authkey: "372078AVkzLEKti61I61e7c540P1", right authkey
+        // authkey: "372078AVkzLEKti61I61e7c540F1",
+        authkey: "372078AVkzLEKti61I61e7c540P1",
         "Content-Type": "application/json",
         Cookie: "PHPSESSID=p6sigj223tdkhtfnq7l41tplh3",
       },
