@@ -7,30 +7,48 @@ const registerUser = async (req, res, next) => {
       lastname: req.body.lastname,
       gender: req.body.gender,
       email: req.body.email,
-      mobile_no: req.body.mobile_no,
+      number: req.body.number,
       panNo: req.body.panNo,
       dateOfBirth: req.body.dateOfBirth,
     };
+
     for (let key in mustData) {
-      if (mustData[key] == undefined || mustData[key] == "") {
-        throw new Error(`Invalid feild ${key}`);
+      if (mustData[key] == undefined || mustData[key] === "") {
+        throw new Error(`Invalid field: ${key}`);
       }
     }
-    let user = await User.findOne({ where: { mobile_no } });
+
+    const optionalData = {
+      middle_name: req.body.middle_name,
+      pincode: req.body.pincode,
+      city_id: req.body.city_id,
+      employement_type_id: req.body.employement_type_id,
+      income_annual: req.body.income_annual,
+      inc_rec_id: req.body.inc_rec_id,
+      created_by: req.body.created_by,
+      updated_by: req.body.updated_by,
+    };
+
+    let user = await User.findOne({ where: { mobile_no: mustData.number } });
     if (!user) {
       await User.create({
-        firstname: mustData.firstname,
-        lastname: mustData.lastname,
+        first_name: mustData.firstname,
+        last_name: mustData.lastname,
         gender: mustData.gender,
         email: mustData.email,
-        mobile_no: mustData.mobile_no,
+        mobile_no: mustData.number,
+        dob: mustData.dateOfBirth,
         panNo: mustData.panNo,
-        dateOfBirth: mustData.dateOfBirth,
+        ...optionalData,
       });
 
       return res
         .status(201)
         .json({ message: "User created successfully", status: true });
+    } else {
+      return res
+        .status(400)
+        .json({ message: "User already exists", status: false });
     }
   } catch (err) {
     return res.status(500).json({

@@ -1,42 +1,80 @@
 const { Sequelize } = require("sequelize");
 const db = require("./index.js");
 
-const User = db.define("tbluser", {
-  userid: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
+const User = db.define(
+  "client_personal_info",
+  {
+    client_id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
 
-  firstname: {
-    type: Sequelize.STRING(50),
-  },
+    mbl_reg_id: {
+      type: Sequelize.INTEGER,
+      // allowNull: false,
+    },
+    mobile_no: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        is: /^[0-9]{10}$/, // Regex to validate 10-digit mobile number
+      },
+    },
 
-  lastname: {
-    type: Sequelize.STRING(50),
-  },
-  panNo: {
-    type: Sequelize.STRING(50),
-  },
-  dateOfBirth: {
-    type: Sequelize.STRING(50),
-  },
-  mobile_no: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      is: /^[0-9]{10}$/, // Regex to validate 10-digit mobile number
+    first_name: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+    },
+    middle_name: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+    },
+    last_name: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+    },
+    dob: {
+      type: Sequelize.STRING(50),
+    },
+    email: {
+      type: Sequelize.STRING(100),
+    },
+    gender: {
+      type: Sequelize.STRING(15),
+    },
+    panNo: {
+      type: Sequelize.STRING(15),
+    },
+    pincode: {
+      type: Sequelize.INTEGER,
+    },
+    city_id: {
+      type: Sequelize.INTEGER,
+    },
+    employement_type_id: {
+      type: Sequelize.INTEGER,
+    },
+    income_annual: {
+      type: Sequelize.STRING(30),
+    },
+    inc_rec_id: {
+      type: Sequelize.INTEGER,
+    },
+    status: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true,
+    },
+    created_by: {
+      type: Sequelize.STRING(50),
+    },
+    updated_by: {
+      type: Sequelize.STRING(50),
     },
   },
-  gender: {
-    type: Sequelize.STRING(15),
-  },
-  email: {
-    type: Sequelize.STRING(100),
-  },
-  status: {
-    type: Sequelize.BOOLEAN,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = User;

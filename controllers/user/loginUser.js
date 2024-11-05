@@ -1,10 +1,10 @@
 const getOTP = require("../../middlewares/OTP/otp.js");
 const OTP = require("../../middlewares/OTP/sendOtp.js");
-const OTPMODEL = require("../../model/otp.js");
+const OTPMODEL = require("../../model/mobileRegister.js");
 
 const loginUser = async (req, res) => {
   try {
-    const { number } = req.body;
+    const { prefix, number, device_ip, is_vpn, outside_india,dedup_matched } = req.body;
 
     const otp = await getOTP();
 
@@ -18,6 +18,11 @@ const loginUser = async (req, res) => {
         otp: otp,
         expire_time: expire_time,
         wrong_attempt: 0,
+        mobile_prefix: prefix,
+        device_ip: device_ip,
+        is_vpn: is_vpn,
+        outside_india: outside_india,
+        dedup_matched:dedup_matched
       });
     } else {
       await user.update({

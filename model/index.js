@@ -12,14 +12,6 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     idle: dbConfig.pool.idle,
   },
 });
-// const db = {};
-
-// db.Sequelize = Sequelize;
-// db.sequelize = sequelize;
-
-// db.signups = require("./signup.model.js")(sequelize, Sequelize);
-
-// db.otps = require("./otp.js")(sequelize, Sequelize);
 
 // =====================Master Relation========================
 
