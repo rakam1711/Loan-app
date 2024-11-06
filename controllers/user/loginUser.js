@@ -4,7 +4,8 @@ const OTPMODEL = require("../../model/mobileRegister.js");
 
 const loginUser = async (req, res) => {
   try {
-    const { prefix, number, device_ip, is_vpn, outside_india,dedup_matched } = req.body;
+    const { prefix, number, device_ip, is_vpn, outside_india, dedup_matched } =
+      req.body;
 
     const otp = await getOTP();
 
@@ -22,7 +23,7 @@ const loginUser = async (req, res) => {
         device_ip: device_ip,
         is_vpn: is_vpn,
         outside_india: outside_india,
-        dedup_matched:dedup_matched
+        dedup_matched: dedup_matched,
       });
     } else {
       await user.update({

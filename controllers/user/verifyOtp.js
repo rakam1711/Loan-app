@@ -14,7 +14,7 @@ const verifyotp = async (req, res) => {
       });
     }
 
-    if (userOtp.wrong_attempt >= 3) {
+    if (userOtp.dataValues.wrong_attempt >= 3) {
       return res.status(400).json({
         status: false,
         message:
@@ -29,20 +29,28 @@ const verifyotp = async (req, res) => {
     }
     const staticCode = process.env.STATICCODE;
 
-    if (userOtp.OTP !== otp && staticCode !== otp) {
+    if (userOtp.dataValues.otp !== Number(otp) && staticCode !== otp) {
       await Otp.update(
-        { wrong_attempt: userOtp.wrong_attempt + 1 },
+        { wrong_attempt: userOtp.dataValues.wrong_attempt + 1 },
         { where: { mobile_no: number } }
       );
 
       return res.status(400).json({
         status: false,
-        message: `Wrong OTP, attempt failed ${userOtp.wrong_attempt + 1}`,
+        message: `Wrong OTP, attempt failed ${
+          userOtp.dataValues.wrong_attempt + 1
+        }`,
       });
     }
 
-    if (userOtp.OTP === otp || (staticCode === otp && userOtp.is_active)) {
-      // await Otp.update({ is_active: false }, { where: { number } });
+    if (
+      userOtp.dataValues.otp === Number(otp) ||
+      (staticCode === otp && userOtp.dataValues.is_active)
+    ) {
+      await Otp.update(
+        { is_active: false, wrong_attempt: 0 },
+        { where: { mobile_no: number } }
+      );
 
       // const newUser = await User.findOne({ where: { number } });
       // if (!newUser) {
