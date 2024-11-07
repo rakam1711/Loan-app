@@ -45,6 +45,11 @@ const User = db.define(
     },
     panNo: {
       type: Sequelize.STRING(15),
+      unique: true,
+    },
+    aadharNo: {
+      type: Sequelize.STRING(15),
+      unique: true,
     },
     pincode: {
       type: Sequelize.INTEGER,

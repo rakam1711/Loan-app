@@ -27,9 +27,15 @@ const registerUser = async (req, res, next) => {
       inc_rec_id: req.body.inc_rec_id,
       created_by: req.body.created_by,
       updated_by: req.body.updated_by,
+      aadharNo: req.body.aadharNo,
     };
 
-    let user = await User.findOne({ where: { mobile_no: mustData.number } });
+    let user = await User.findOne({
+      where: {
+        $or: [{ mobile_no: mustData.number }, { panNo: mustData.panNo }],
+      },
+    });
+
     if (!user) {
       await User.create({
         first_name: mustData.firstname,
@@ -46,9 +52,11 @@ const registerUser = async (req, res, next) => {
         .status(201)
         .json({ message: "User created successfully", status: true });
     } else {
-      return res
-        .status(400)
-        .json({ message: "User already exists", status: false });
+      let errorMessage =
+        user.mobile_no === mustData.number
+          ? "User with this mobile number already exists"
+          : "User with this PAN number already exists";
+      return res.status(400).json({ message: errorMessage, status: false });
     }
   } catch (err) {
     return res.status(500).json({
