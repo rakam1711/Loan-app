@@ -1,13 +1,14 @@
 const PanRegister = require("../../model/pan.js");
+const { Sequelize } = require("sequelize");
 
 const registerPan = async (req, res, next) => {
   try {
     const mustData = {
-      mbl_reg_id: req.body.mbl_reg_id,
-      user_reg_id: req.body.user_reg_id,
+      // mbl_reg_id: req.body.mbl_reg_id,
+      // user_reg_id: req.body.user_reg_id,
       panNo: req.body.panNo,
       panName: req.body.panName,
-      created_by: req.body.created_by,
+      // created_by: req.body.created_by,
     };
 
     for (let key in mustData) {
@@ -27,11 +28,11 @@ const registerPan = async (req, res, next) => {
 
     if (!existingRecord) {
       await PanRegister.create({
-        mbl_reg_id: mustData.mbl_reg_id,
-        user_reg_id: mustData.user_reg_id,
+        // mbl_reg_id: mustData.mbl_reg_id,
+        // user_reg_id: mustData.user_reg_id,
         panNo: mustData.panNo,
         panName: mustData.panName,
-        created_by: mustData.created_by,
+        // created_by: mustData.created_by,
         pan_varified:
           req.body.pan_varified !== undefined ? req.body.pan_varified : true,
         status: req.body.status !== undefined ? req.body.status : true,

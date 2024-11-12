@@ -1,13 +1,15 @@
 const AadharRegister = require("../../model/aadhar.js");
+const { Sequelize } = require("sequelize");
+
 
 const aadharRegister = async (req, res, next) => {
   try {
     const mustData = {
-      mbl_reg_id: req.body.mbl_reg_id,
-      user_reg_id: req.body.user_reg_id,
+      // mbl_reg_id: req.body.mbl_reg_id,
+      // user_reg_id: req.body.user_reg_id,
       aaddharNo: req.body.aaddharNo,
       aaddharName: req.body.aaddharName,
-      created_by: req.body.created_by,
+      // created_by: req.body.created_by,
     };
 
     for (let key in mustData) {
@@ -27,11 +29,11 @@ const aadharRegister = async (req, res, next) => {
 
     if (!existingRecord) {
       await AadharRegister.create({
-        mbl_reg_id: mustData.mbl_reg_id,
-        user_reg_id: mustData.user_reg_id,
+        // mbl_reg_id: mustData.mbl_reg_id,
+        // user_reg_id: mustData.user_reg_id,
         aaddharNo: mustData.aaddharNo,
         aaddharName: mustData.aaddharName,
-        created_by: mustData.created_by,
+        // created_by: mustData.created_by,
         aaddhar_varified:
           req.body.aaddhar_varified !== undefined
             ? req.body.aaddhar_varified

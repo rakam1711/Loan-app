@@ -7,14 +7,12 @@ const verifyotp = async (req, res) => {
     const currentTime = new Date();
 
     const userOtp = await Otp.findOne({ where: { mobile_no: number } });
-    console.log(userOtp, "+++++++++++++++++++++++++++");
     if (!userOtp) {
       return res.status(400).json({
         status: false,
         message: "Please register with this number first",
       });
     }
-    console.log("line 17 ++++++++++++++++++++++++++++++");
 
     if (userOtp.wrong_attempt >= 3) {
       return res.status(400).json({
@@ -23,15 +21,12 @@ const verifyotp = async (req, res) => {
           "You have exceeded the limit of wrong attempts. Please resend OTP.",
       });
     }
-    console.log("line 26 ++++++++++++++++++++++++++++++");
-    console.log(userOtp.expire_time, "  --- ---      ", currentTime);
     if (userOtp.expire_time < currentTime) {
       return res.status(400).json({
         status: false,
         message: "OTP has expired",
       });
     }
-    console.log("33,+++++++++++++++++++++++++++++++");
     const staticCode = process.env.STATICCODE;
 
     if (userOtp.OTP !== otp && staticCode !== otp) {
@@ -45,7 +40,6 @@ const verifyotp = async (req, res) => {
         message: `Wrong OTP, attempt failed ${userOtp.wrong_attempt + 1}`,
       });
     }
-    console.log("line 47 ++++++++++++++++++++++++++++++");
 
     if (userOtp.OTP === otp || (staticCode === otp && userOtp.is_active)) {
       // await Otp.update({ is_active: false }, { where: { number } });
@@ -58,7 +52,6 @@ const verifyotp = async (req, res) => {
       //     token: null,
       //   });
       // }
-      console.log("line 60 ++++++++++++++++++++++++++++++");
 
       //token return hona hn agar user new nhi hn
       return res

@@ -9,14 +9,22 @@ const panRegister = db.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    mbl_reg_id: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    user_reg_id: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
+    // mbl_reg_id: {
+    //   type: Sequelize.INTEGER,
+    //   allowNull: false,
+    //   references: {
+    //     model: "mobile_registraion",
+    //     key: "mbl_reg_id",
+    //   },
+    // },
+    // user_reg_id: {
+    //   type: Sequelize.INTEGER,
+    //   allowNull: false,
+    //   references: {
+    //     model: "client_personal_info",
+    //     key: "client_id",
+    //   },
+    // },
     panNo: {
       type: Sequelize.STRING(15),
       unique: true,
@@ -33,9 +41,9 @@ const panRegister = db.define(
       type: Sequelize.BOOLEAN,
       defaultValue: true,
     },
-    created_by: {
-      type: Sequelize.STRING(50),
-    },
+    // created_by: {
+    //   type: Sequelize.STRING(50),
+    // },
 
     is_active: {
       type: Sequelize.BOOLEAN,

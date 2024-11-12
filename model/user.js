@@ -12,13 +12,17 @@ const User = db.define(
 
     mbl_reg_id: {
       type: Sequelize.INTEGER,
-      // allowNull: false,
+      allowNull: false,
+      references: {
+        model: "mobile_registraion",
+        key: "mbl_reg_id",
+      },
     },
     mobile_no: {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
-        is: /^[0-9]{10}$/, // Regex to validate 10-digit mobile number
+        is: /^[0-9]{10}$/, 
       },
     },
 
