@@ -1,5 +1,7 @@
-import express from "express";
-import { APP_PORT } from "./config";
+const express = require("express");
+// import express from "express";
+const { APP_PORT } = require("./config");
+// import { APP_PORT } from "./config";
 //import errorHandler from "./middlewares/errorHandler";
 const cors = require("cors");
 const db = require("./model/index");
