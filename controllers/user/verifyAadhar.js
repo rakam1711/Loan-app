@@ -2,7 +2,7 @@ const AadharRegister = require("../../model/aadhar.js");
 
 const aadharVerify = async (req, res, next) => {
   try {
-    const { aaddharNo } = req.query;
+    const { aaddharNo } = req.body;
 
     if (!aaddharNo || aaddharNo.trim() === "") {
       return res.status(400).json({

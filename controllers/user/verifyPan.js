@@ -2,7 +2,7 @@ const PanRegister = require("../../model/pan.js");
 
 const verifyPan = async (req, res, next) => {
   try {
-    const { panNo } = req.query;
+    const { panNo } = req.body;
 
     if (!panNo || panNo.trim() === "") {
       return res.status(400).json({
