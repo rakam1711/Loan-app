@@ -17,12 +17,10 @@ const registerPan = async (req, res, next) => {
       }
     }
 
+    // Query only by PAN number
     let existingRecord = await PanRegister.findOne({
       where: {
-        [Sequelize.Op.or]: [
-          { panNo: mustData.panNo },
-          { panName: mustData.panName },
-        ],
+        panNo: mustData.panNo,
       },
     });
 
@@ -33,23 +31,23 @@ const registerPan = async (req, res, next) => {
         panNo: mustData.panNo,
         panName: mustData.panName,
         // created_by: mustData.created_by,
-        pan_varified:
-          req.body.pan_varified !== undefined ? req.body.pan_varified : true,
-        status: req.body.status !== undefined ? req.body.status : true,
-        is_active: req.body.is_active !== undefined ? req.body.is_active : true,
       });
 
       return res
         .status(201)
         .json({ message: "PAN registered successfully", status: true });
     } else {
-      let errorMessage =
-        existingRecord.panNo === mustData.panNo
-          ? "This PAN number is already registered"
-          : "This PAN name is already registered";
-      return res.status(400).json({ message: errorMessage, status: false });
+      return res.status(400).json({
+        message: "This PAN number is already registered",
+        status: false,
+      });
     }
   } catch (err) {
+    if (err.name === "SequelizeValidationError") {
+      console.error("Validation Error Details:", err.errors);
+    } else {
+      console.error("Error:", err);
+    }
     return res.status(500).json({
       status: false,
       message: err.message,

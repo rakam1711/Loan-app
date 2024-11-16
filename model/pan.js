@@ -31,7 +31,7 @@ const panRegister = db.define(
     },
     panName: {
       type: Sequelize.STRING(15),
-      unique: true,
+      // unique: true,
     },
     pan_varified: {
       type: Sequelize.BOOLEAN,

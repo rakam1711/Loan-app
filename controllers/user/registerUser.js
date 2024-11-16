@@ -1,14 +1,15 @@
+const { Op } = require("sequelize"); // Import Op from Sequelize
 const User = require("../../model/user.js");
 
 const registerUser = async (req, res, next) => {
   try {
+    console.log(req.body);
     const mustData = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       gender: req.body.gender,
       email: req.body.email,
       number: req.body.number,
-      panNo: req.body.panNo,
       dateOfBirth: req.body.dateOfBirth,
     };
 
@@ -27,12 +28,14 @@ const registerUser = async (req, res, next) => {
       inc_rec_id: req.body.inc_rec_id,
       created_by: req.body.created_by,
       updated_by: req.body.updated_by,
-      aadharNo: req.body.aadharNo,
     };
 
     let user = await User.findOne({
       where: {
-        $or: [{ mobile_no: mustData.number }, { panNo: mustData.panNo }],
+        [Op.or]: [
+          { mobile_no: mustData.number }
+          // ,{ panNo: mustData.panNo }
+        ],
       },
     });
 
@@ -44,7 +47,6 @@ const registerUser = async (req, res, next) => {
         email: mustData.email,
         mobile_no: mustData.number,
         dob: mustData.dateOfBirth,
-        panNo: mustData.panNo,
         ...optionalData,
       });
 

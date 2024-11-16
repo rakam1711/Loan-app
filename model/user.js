@@ -10,19 +10,19 @@ const User = db.define(
       primaryKey: true,
     },
 
-    mbl_reg_id: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      references: {
-        model: "mobile_registraion",
-        key: "mbl_reg_id",
-      },
-    },
+    // mbl_reg_id: {
+    //   type: Sequelize.INTEGER,
+    //   allowNull: false,
+    //   references: {
+    //     model: "mobile_registraion",
+    //     key: "mbl_reg_id",
+    //   },
+    // },
     mobile_no: {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
-        is: /^[0-9]{10}$/, 
+        is: /^[0-9]{10}$/,
       },
     },
 
@@ -47,14 +47,14 @@ const User = db.define(
     gender: {
       type: Sequelize.STRING(15),
     },
-    panNo: {
-      type: Sequelize.STRING(15),
-      unique: true,
-    },
-    aadharNo: {
-      type: Sequelize.STRING(15),
-      unique: true,
-    },
+    // panNo: {
+    //   type: Sequelize.STRING(15),
+    //   unique: true,
+    // },
+    // aadharNo: {
+    //   type: Sequelize.STRING(15),
+    //   unique: true,
+    // },
     pincode: {
       type: Sequelize.INTEGER,
     },
